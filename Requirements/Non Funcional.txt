@@ -1,0 +1,5 @@
+-> store all media stuff in the cloud
+-> chat history
+-> low latency
+-> encryption
+-> i need to have the offline mod like whatsapp

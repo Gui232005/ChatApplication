@@ -1,9 +1,19 @@
 import 'package:flutter/material.dart';
-import 'package:pinput/pinput.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:go_router/go_router.dart';
+import 'package:chat_application/route.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
-void main() {
-  runApp(const MyApp());
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+
+  await Supabase.initialize(
+    url: 'https://zutiqrctwqybbfuosvgp.supabase.co',
+    anonKey: 'sb_publishable_Qo8cB1VtQuEcPnTBgLbNPg_GgeAYRzH',
+  );
+  runApp(MyApp());
 }
+
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
@@ -11,9 +21,23 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      home: const MyHomePage(),
+    return MaterialApp.router(
+      routerConfig: router,
+      title: 'Chat Application',
+      theme: ThemeData(primarySwatch: Colors.blue),
     );
+  }
+}
+
+Future<void> alreadyLoggedIn(BuildContext context) async {
+  bool login;
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+  login = prefs.getBool('isLoggedIn') ?? false;
+  if (login) {
+    context.push('/mainChat');
+  } else {
+    await Future.delayed(const Duration(seconds: 5));
+    context.push('/createAccount');
   }
 }
 
@@ -24,65 +48,35 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
+  @override
+  void initState() {
+    super.initState();
+    alreadyLoggedIn(context);
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      /*appBar: AppBar(
-        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-        title: Text(widget.title),
-      ),*/
       body: GestureDetector(
-        onTap: () {
-          FocusScope.of(context).unfocus();
-        },
-        child: Padding(padding: const EdgeInsets.all(50.0),
+        onTap: () => FocusScope.of(context).unfocus(),
+        child: Padding(
+          padding: const EdgeInsets.all(50.0),
           child: Container(
             width: double.infinity,
             height: double.infinity,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
-              mainAxisAlignment: MainAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Text('Welcome to Chat Application',
-                  style: TextStyle(
-                    fontSize: 20,
-                    fontWeight: FontWeight.bold,
-                  ),
-                  textAlign: TextAlign.center,
-                ),
-                SizedBox(height: 5),
-                /*Image.asset(
-                  'assets/app_icon.png',
-                  width: 150,
-                  height: 150,
-                ),*/
-                SizedBox(height: 20),
-                TextField(
-                  decoration: InputDecoration(
-                    border: OutlineInputBorder(),
-                    labelText: 'Username',
-                  ),
-                ),
-                SizedBox(height: 5),
-                Pinput(
-                  length: 6,
-                  defaultPinTheme: PinTheme(
-                    width: 40,
-                    height: 55,
-                    textStyle: TextStyle(
-                      fontSize: 20,
-                      color: Colors.black,
-                    ),
-                    decoration: BoxDecoration(
-                      border: Border.all(color: Colors.grey),
-                      borderRadius: BorderRadius.circular(5),
-                    ),
-                  ),
+                Image.asset('assets/app_icon.png', width: 150, height: 150),
+                const SizedBox(height: 10),
+                const Text(
+                  'Welcome to Chatio',
+                  style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
                 ),
               ],
             ),
-          )
+          ),
         ),
       ),
     );

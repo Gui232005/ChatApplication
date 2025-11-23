@@ -1,0 +1,11 @@
+-> one to one person chat
+-> possibility to create groups
+-> file and photos upload and download
+-> delete and edit mensages
+-> archive, pin and delete conversations
+-> block people
+-> make calls (video or normal calls)
+-> react to mensages
+-> online status
+-> Notifications
+-> can see if my mensages was already read
