@@ -4,16 +4,9 @@ import 'package:go_router/go_router.dart';
 import 'package:chat_application/route.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
-Future<void> main() async {
-  WidgetsFlutterBinding.ensureInitialized();
-
-  await Supabase.initialize(
-    url: 'https://zutiqrctwqybbfuosvgp.supabase.co',
-    anonKey: 'sb_publishable_Qo8cB1VtQuEcPnTBgLbNPg_GgeAYRzH',
-  );
+void main() {
   runApp(MyApp());
 }
-
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
