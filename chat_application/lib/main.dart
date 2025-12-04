@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:go_router/go_router.dart';
 import 'package:chat_application/route.dart';
-import 'package:supabase_flutter/supabase_flutter.dart';
 
 void main() {
   runApp(MyApp());

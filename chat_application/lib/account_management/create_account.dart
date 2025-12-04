@@ -1,6 +1,7 @@
-import 'dart:async';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
+import 'package:chat_application/API/user.dart';
+import 'package:go_router/go_router.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class CreateAccount extends StatefulWidget {
   const CreateAccount({super.key});
@@ -12,6 +13,7 @@ class CreateAccount extends StatefulWidget {
 class _CreateAccountState extends State<CreateAccount> {
   final TextEditingController _usernameController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
+
 
   @override
   Widget build(BuildContext context) {
@@ -52,15 +54,20 @@ class _CreateAccountState extends State<CreateAccount> {
               ),
               const SizedBox(height: 20),
               ElevatedButton(
-                onPressed: () {
+                onPressed: () async {
                   print('Creating account for ${_usernameController.text}');
                   if (_usernameController.text.isNotEmpty && _passwordController.text.isNotEmpty) {
                     ScaffoldMessenger.of(context).showSnackBar(
                       const SnackBar(content: Text('Account created successfully!')),
                     );
+                    UserAPI().createUser(_usernameController.text, _passwordController.text);
                     _usernameController.clear();
                     _passwordController.clear();
-                    // context.push('/mainChat');
+                    // Functionality to store the new account in the database
+                    await SharedPreferences.getInstance().then((prefs) {
+                      prefs.setBool('isLoggedIn', true);
+                    });
+                    context.go('/mainChat');
                   } else {
                     ScaffoldMessenger.of(context).showSnackBar(
                       const SnackBar(content: Text('Please enter both username and password')),

@@ -1,8 +1,16 @@
-import 'package:http/http.dart' as http;
 import 'dart:convert';
+import 'package:http/http.dart' as http;
 
 class UserAPI {
-  static const String baseUrl = 'https://chat-application-noie.onrender.com/users/';
+  final baseUrl = 'https://chat-application-noie.onrender.com/users';
 
-  UserAPI();
+  Future<http.Response> createUser(String username, String password) async {
+    final url = Uri.parse('$baseUrl/adduser/$username');
+    final response = await http.post(
+      url,
+      headers: {'Content-Type': 'application/json'},
+      body: jsonEncode({'username': username, 'password': password}),
+    );
+    return response;
+  }
 }
