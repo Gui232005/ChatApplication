@@ -13,4 +13,10 @@ class UserAPI {
     );
     return response;
   }
+
+  Future<http.Response> listAllUsers() async {
+    final url = Uri.parse('$baseUrl/list_client');
+    final response = await http.get(url);
+    return response;
+  }
 }
