@@ -19,4 +19,10 @@ class UserAPI {
     final response = await http.get(url);
     return response;
   }
+
+  Future<bool> getUser(String username) async {
+    final url = Uri.parse('$baseUrl/getuser/$username');
+    final response = await http.get(url);
+    return response.statusCode == 200;
+  }
 }

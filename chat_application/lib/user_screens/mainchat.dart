@@ -58,7 +58,7 @@ class _MainChatState extends State<MainChat> {
         },
         tooltip: 'Create New Chat',
         child: const Icon(Icons.add),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
+      ),
       bottomNavigationBar: Footer(),
     );
   }

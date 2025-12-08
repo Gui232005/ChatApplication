@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:chat_application/API/user.dart';
 import 'package:go_router/go_router.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class CreateAccount extends StatefulWidget {
   const CreateAccount({super.key});
@@ -60,14 +59,10 @@ class _CreateAccountState extends State<CreateAccount> {
                     ScaffoldMessenger.of(context).showSnackBar(
                       const SnackBar(content: Text('Account created successfully!')),
                     );
-                    UserAPI().createUser(_usernameController.text, _passwordController.text);
+                    await UserAPI().createUser(_usernameController.text, _passwordController.text);                    
                     _usernameController.clear();
                     _passwordController.clear();
-                    // Functionality to store the new account in the database
-                    await SharedPreferences.getInstance().then((prefs) {
-                      prefs.setBool('isLoggedIn', true);
-                    });
-                    context.go('/mainChat');
+                    context.go('/');
                   } else {
                     ScaffoldMessenger.of(context).showSnackBar(
                       const SnackBar(content: Text('Please enter both username and password')),

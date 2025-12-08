@@ -21,15 +21,12 @@ class MyApp extends StatelessWidget {
   }
 }
 
-Future<void> alreadyLoggedIn(BuildContext context) async {
+Future<void> remeberMe(BuildContext context) async {
   bool login;
   SharedPreferences prefs = await SharedPreferences.getInstance();
   login = prefs.getBool('isLoggedIn') ?? false;
   if (login) {
     context.push('/mainChat');
-  } else {
-    await Future.delayed(const Duration(seconds: 5));
-    context.push('/createAccount');
   }
 }
 
@@ -40,12 +37,13 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
+  final TextEditingController _usernameController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
   @override
   void initState() {
     super.initState();
-    alreadyLoggedIn(context);
+    remeberMe(context);
   }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -65,6 +63,37 @@ class _MyHomePageState extends State<MyHomePage> {
                 const Text(
                   'Welcome to Chatio',
                   style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+                ),
+                const SizedBox(height: 40),
+                TextField(
+                  decoration: const InputDecoration(labelText: 'Username'),
+                  controller: _usernameController,
+                ),
+                const SizedBox(height: 20),
+                TextField(
+                  decoration: const InputDecoration(labelText: 'Password'),
+                  controller: _passwordController,
+                  obscureText: true,
+                ),
+                const SizedBox(height: 40),
+                ElevatedButton(
+                  onPressed: () {
+                    context.push('/loginpage');
+                  },
+                  child: const Text('Login'),
+                ),
+                const SizedBox(height: 20),
+                TextButton(
+                  onPressed: () {
+                    context.push('/createAccount');
+                  },
+                  child: const Text(
+                    'New here? Create an account',
+                    style: TextStyle(
+                      fontSize: 16,
+                      decoration: TextDecoration.underline,
+                    ),
+                  ),
                 ),
               ],
             ),
