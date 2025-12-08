@@ -63,9 +63,14 @@ async def update_last_seen_at(last_seen_at: str):
     response = supabase_client.table("users").update({"last_seen_at": last_seen_at}).eq("last_seen_at", last_seen_at).execute()
     return {"updated": response.data}
 
+
 @router.post("/login/{username}/{password}")
 async def login(username: str, password: str):
-    response = supabase_client.auth.sign_in(username=username, password=password)
-    if response.user:
-        return {"message": "Login successful", "user": response.user}
+    response = supabase_client.table("users").select("*").eq("username", username).execute()
+
+    if response.data and len(response.data) > 0:
+        user = response.data[0]
+        if str(user.get('password')) == password:
+            return {"message": "Login successful", "user": user}
+
     return {"error": "Invalid credentials"}
