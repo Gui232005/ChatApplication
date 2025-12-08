@@ -63,7 +63,7 @@ async def update_last_seen_at(last_seen_at: str):
     response = supabase_client.table("users").update({"last_seen_at": last_seen_at}).eq("last_seen_at", last_seen_at).execute()
     return {"updated": response.data}
 
-@router.post("/users/login/{username}{password}")
+@router.post("/users/login/{username}/{password}")
 async def login(username: str, password: str):
     response = supabase_client.auth.sign_in(email=username, password=password)
     if response.user:
