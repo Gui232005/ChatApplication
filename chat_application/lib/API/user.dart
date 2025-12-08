@@ -28,11 +28,8 @@ class UserAPI {
 
   Future<bool> loginUser(String username, String password) async {
     final url = Uri.parse('$baseUrl/login/$username/$password');
-    final response = await http.post(
-      url,
-      headers: {'Content-Type': 'application/json'},
-      body: jsonEncode({'username': username, 'password': password}),
-    );
+    final response = await http.post(url);
+
     print("URL: $url");
     print("Status: ${response.statusCode}");
     print("Body: ${response.body}");
@@ -40,7 +37,10 @@ class UserAPI {
     if (response.statusCode == 200) {
       final jsonResponse = jsonDecode(response.body);
       print("Response JSON: $jsonResponse");
-      return true;
+
+      if (jsonResponse['message'] == 'Login successful') {
+        return true;
+      }
     }
     return false;
   }

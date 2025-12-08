@@ -81,6 +81,7 @@ class _MyHomePageState extends State<MyHomePage> {
                       controller: _passwordController,
                       obscureText: !isPasswordVisible,
                       decoration: InputDecoration(
+                        labelText: 'Password',
                         suffixIcon: IconButton(
                           icon: Icon(
                             isPasswordVisible ? Icons.visibility : Icons.visibility_off,
