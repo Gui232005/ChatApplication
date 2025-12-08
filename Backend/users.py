@@ -21,10 +21,11 @@ async def get_user(username: str):
         return response.data[0]
     return {"error": "User not found"}
 
-@router.post("/adduser/{username}")
-async def add_user(username: str):
+@router.post("/adduser/{username}{password}")
+async def add_user(username: str, password: int):
     new_user = {
         "username": username,
+        "password": password,
         "created_at": datetime.datetime.utcnow().isoformat()
     }
     response = supabase_client.table("users").insert(new_user).execute()

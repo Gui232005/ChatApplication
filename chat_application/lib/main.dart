@@ -1,3 +1,4 @@
+import 'package:chat_application/API/user.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:go_router/go_router.dart';
@@ -50,10 +51,14 @@ class _MyHomePageState extends State<MyHomePage> {
       body: GestureDetector(
         onTap: () => FocusScope.of(context).unfocus(),
         child: Padding(
-          padding: const EdgeInsets.all(50.0),
+          padding: const EdgeInsets.only(left: 24.0, right: 24.0),
           child: Container(
             width: double.infinity,
-            height: double.infinity,
+              constraints: BoxConstraints(
+                minHeight: MediaQuery.of(context).size.height -
+                    MediaQuery.of(context).padding.top -
+                    MediaQuery.of(context).padding.bottom,
+              ),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisAlignment: MainAxisAlignment.center,
@@ -64,7 +69,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   'Welcome to Chatio',
                   style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
                 ),
-                const SizedBox(height: 40),
+                const SizedBox(height: 30),
                 TextField(
                   decoration: const InputDecoration(labelText: 'Username'),
                   controller: _usernameController,
@@ -75,16 +80,29 @@ class _MyHomePageState extends State<MyHomePage> {
                   controller: _passwordController,
                   obscureText: true,
                 ),
-                const SizedBox(height: 40),
+                const SizedBox(height: 30),
                 ElevatedButton(
-                  onPressed: () {
-                    context.push('/loginpage');
+                  onPressed: () async {
+                    bool success = await UserAPI().loginUser(
+                      _usernameController.text,
+                      _passwordController.text,
+                    );
+                    if (success) {
+                      context.push('/mainChat');
+                    } else {
+                      print("==============================$success==============================");
+                      print("==============================LOGIN FAILED==============================");
+                    }
                   },
                   child: const Text('Login'),
                 ),
                 const SizedBox(height: 20),
                 TextButton(
-                  onPressed: () {
+                  onPressed: () async {
+                    await UserAPI().loginUser(
+                      _usernameController.text,
+                      _passwordController.text,
+                    );
                     context.push('/createAccount');
                   },
                   child: const Text(
