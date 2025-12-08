@@ -14,9 +14,9 @@ async def list_client():
     response = supabase_client.table("users").select("*").execute()
     return response.data
 
-@router.get("/getuser/{user_id}")
-async def get_user(user_id: int):
-    response = supabase_client.table("users").select("*").eq("id", user_id).execute()
+@router.get("/getuser/{username}")
+async def get_user(username: str):
+    response = supabase_client.table("users").select("*").eq("username", username).execute()
     if response.data:
         return response.data[0]
     return {"error": "User not found"}
