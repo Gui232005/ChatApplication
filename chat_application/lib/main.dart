@@ -40,6 +40,8 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   final TextEditingController _usernameController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
+  
+  bool isPasswordVisible = false;
   @override
   void initState() {
     super.initState();
@@ -76,9 +78,20 @@ class _MyHomePageState extends State<MyHomePage> {
                 ),
                 const SizedBox(height: 20),
                 TextField(
-                  decoration: const InputDecoration(labelText: 'Password'),
-                  controller: _passwordController,
-                  obscureText: true,
+                      controller: _passwordController,
+                      obscureText: !isPasswordVisible,
+                      decoration: InputDecoration(
+                        suffixIcon: IconButton(
+                          icon: Icon(
+                            isPasswordVisible ? Icons.visibility : Icons.visibility_off,
+                          ),
+                          onPressed: () {
+                            setState(() {
+                              isPasswordVisible = !isPasswordVisible;
+                            });
+                          },
+                        ),
+                      ),
                 ),
                 const SizedBox(height: 30),
                 ElevatedButton(
@@ -99,10 +112,6 @@ class _MyHomePageState extends State<MyHomePage> {
                 const SizedBox(height: 20),
                 TextButton(
                   onPressed: () async {
-                    await UserAPI().loginUser(
-                      _usernameController.text,
-                      _passwordController.text,
-                    );
                     context.push('/createAccount');
                   },
                   child: const Text(

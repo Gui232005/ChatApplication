@@ -65,7 +65,7 @@ async def update_last_seen_at(last_seen_at: str):
 
 @router.post("/users/login/{username}/{password}")
 async def login(username: str, password: str):
-    response = supabase_client.auth.sign_in(email=username, password=password)
+    response = supabase_client.auth.sign_in(username=username, password=password)
     if response.user:
         return {"message": "Login successful", "user": response.user}
     return {"error": "Invalid credentials"}
