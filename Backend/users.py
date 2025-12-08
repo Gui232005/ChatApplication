@@ -21,8 +21,8 @@ async def get_user(username: str):
         return response.data[0]
     return {"error": "User not found"}
 
-@router.post("/adduser/{username}{password}")
-async def add_user(username: str, password: int):
+@router.post("/adduser/{username}/{password}")
+async def add_user(username: str, password: str):
     new_user = {
         "username": username,
         "password": password,

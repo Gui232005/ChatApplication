@@ -5,7 +5,7 @@ class UserAPI {
   final baseUrl = 'https://chat-application-noie.onrender.com/users';
 
   Future<http.Response> createUser(String username, String password) async {
-    final url = Uri.parse('$baseUrl/adduser/$username');
+    final url = Uri.parse('$baseUrl/adduser/$username$password');
     final response = await http.post(
       url,
       headers: {'Content-Type': 'application/json'},
@@ -27,7 +27,7 @@ class UserAPI {
   }
 
   Future<bool> loginUser(String username, String password) async {
-    final url = Uri.parse('$baseUrl/login/$username$password');
+    final url = Uri.parse('$baseUrl/login/$username/$password');
     final response = await http.post(
       url,
       headers: {'Content-Type': 'application/json'},
