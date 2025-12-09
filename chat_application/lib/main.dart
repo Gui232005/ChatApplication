@@ -40,13 +40,14 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   final TextEditingController _usernameController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
-  
+
   bool isPasswordVisible = false;
   @override
   void initState() {
     super.initState();
     remeberMe(context);
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -56,11 +57,12 @@ class _MyHomePageState extends State<MyHomePage> {
           padding: const EdgeInsets.only(left: 24.0, right: 24.0),
           child: Container(
             width: double.infinity,
-              constraints: BoxConstraints(
-                minHeight: MediaQuery.of(context).size.height -
-                    MediaQuery.of(context).padding.top -
-                    MediaQuery.of(context).padding.bottom,
-              ),
+            constraints: BoxConstraints(
+              minHeight:
+                  MediaQuery.of(context).size.height -
+                  MediaQuery.of(context).padding.top -
+                  MediaQuery.of(context).padding.bottom,
+            ),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisAlignment: MainAxisAlignment.center,
@@ -78,21 +80,24 @@ class _MyHomePageState extends State<MyHomePage> {
                 ),
                 const SizedBox(height: 20),
                 TextField(
-                      controller: _passwordController,
-                      obscureText: !isPasswordVisible,
-                      decoration: InputDecoration(
-                        labelText: 'Password',
-                        suffixIcon: IconButton(
-                          icon: Icon(
-                            isPasswordVisible ? Icons.visibility : Icons.visibility_off,
-                          ),
-                          onPressed: () {
-                            setState(() {
-                              isPasswordVisible = !isPasswordVisible;
-                            });
-                          },
-                        ),
+                  keyboardType: TextInputType.number,
+                  controller: _passwordController,
+                  obscureText: !isPasswordVisible,
+                  decoration: InputDecoration(
+                    labelText: 'Password',
+                    suffixIcon: IconButton(
+                      icon: Icon(
+                        isPasswordVisible
+                            ? Icons.visibility
+                            : Icons.visibility_off,
                       ),
+                      onPressed: () {
+                        setState(() {
+                          isPasswordVisible = !isPasswordVisible;
+                        });
+                      },
+                    ),
+                  ),
                 ),
                 const SizedBox(height: 30),
                 ElevatedButton(
@@ -102,10 +107,21 @@ class _MyHomePageState extends State<MyHomePage> {
                       _passwordController.text,
                     );
                     if (success) {
+                      print(
+                        "==============================LOGIN SUCCESSFUL==============================",
+                      );
+                      SharedPreferences prefs =
+                          await SharedPreferences.getInstance();
+                      await prefs.setString('username', _usernameController.text);
+                      print("================Username saved: ${prefs.getString('username')}================");
                       context.push('/mainChat');
                     } else {
-                      print("==============================$success==============================");
-                      print("==============================LOGIN FAILED==============================");
+                      print(
+                        "==============================$success==============================",
+                      );
+                      print(
+                        "==============================LOGIN FAILED==============================",
+                      );
                     }
                   },
                   child: const Text('Login'),

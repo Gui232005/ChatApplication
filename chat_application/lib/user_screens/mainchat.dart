@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:chat_application/components/footer.dart';
 import 'package:go_router/go_router.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class MainChat extends StatefulWidget {
   const MainChat({Key? key}) : super(key: key);
@@ -63,4 +64,3 @@ class _MainChatState extends State<MainChat> {
     );
   }
 }
-

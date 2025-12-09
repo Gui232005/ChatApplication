@@ -18,7 +18,7 @@ class Footer extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            IconButton(onPressed: (){}, icon: Icon(Icons.chat_bubble, color: Colors.grey[600], size: 30)),
+            IconButton(onPressed: (){}, icon: Icon(Icons.chat_sharp, color: Colors.grey[600], size: 30)),
             SizedBox(width: MediaQuery.of(context).size.width / 4.85), // Spacing between icons
             IconButton(onPressed: (){}, icon: Icon(Icons.phone, color: Colors.grey[600], size: 30)),
             SizedBox(width: MediaQuery.of(context).size.width / 4.85),

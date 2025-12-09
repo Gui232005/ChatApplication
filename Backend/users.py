@@ -14,6 +14,13 @@ async def list_client():
     response = supabase_client.table("users").select("*").execute()
     return response.data
 
+@router.get("/getuserImage/{username}")
+async def get_user_image(username: str):
+    response = supabase_client.table("users").select("profile_picture").eq("username", username).execute()
+    if response.data:
+        return response.data[0]
+    return {"error": "User not found"}
+
 @router.get("/getuser/{username}")
 async def get_user(username: str):
     response = supabase_client.table("users").select("*").eq("username", username).execute()
