@@ -31,10 +31,6 @@ class UserAPI {
     final url = Uri.parse('$baseUrl/login/$username/$password');
     final response = await http.post(url);
 
-    print("URL: $url");
-    print("Status: ${response.statusCode}");
-    print("Body: ${response.body}");
-
     if (response.statusCode == 200) {
       final jsonResponse = jsonDecode(response.body);
       print("Response JSON: $jsonResponse");
@@ -44,5 +40,18 @@ class UserAPI {
       }
     }
     return false;
+  }
+
+  Future<String> getUserImage(String username) async {
+    final url = Uri.parse('$baseUrl/getuserImage/$username');
+    final response = await http.get(url);
+
+    if (response.statusCode == 200) {
+      final jsonResponse = jsonDecode(response.body);
+      print("====================User Image URL: ${jsonResponse['profile_picture']}====================");
+      return jsonResponse['profile_picture'];
+    } else {
+      throw Exception('Failed to load user image');
+    }
   }
 }

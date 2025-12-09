@@ -1,3 +1,5 @@
+import 'dart:convert';
+import 'package:crypto/crypto.dart';
 import 'package:chat_application/API/user.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -102,9 +104,12 @@ class _MyHomePageState extends State<MyHomePage> {
                 const SizedBox(height: 30),
                 ElevatedButton(
                   onPressed: () async {
+                    final passwordEncrypted = sha256
+                        .convert(utf8.encode(_passwordController.text))
+                        .toString();
                     bool success = await UserAPI().loginUser(
                       _usernameController.text,
-                      _passwordController.text,
+                      passwordEncrypted,
                     );
                     if (success) {
                       print(
@@ -113,7 +118,7 @@ class _MyHomePageState extends State<MyHomePage> {
                       SharedPreferences prefs =
                           await SharedPreferences.getInstance();
                       await prefs.setString('username', _usernameController.text);
-                      print("================Username saved: ${prefs.getString('username')}================");
+                      //print("================Username saved: ${prefs.getString('username')}================");
                       context.push('/mainChat');
                     } else {
                       print(

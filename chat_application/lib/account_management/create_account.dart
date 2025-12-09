@@ -1,6 +1,9 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:chat_application/API/user.dart';
 import 'package:go_router/go_router.dart';
+import 'package:crypto/crypto.dart';
 
 class CreateAccount extends StatefulWidget {
   const CreateAccount({super.key});
@@ -12,7 +15,6 @@ class CreateAccount extends StatefulWidget {
 class _CreateAccountState extends State<CreateAccount> {
   final TextEditingController _usernameController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
-
 
   @override
   Widget build(BuildContext context) {
@@ -56,10 +58,12 @@ class _CreateAccountState extends State<CreateAccount> {
                 onPressed: () async {
                   print('Creating account for ${_usernameController.text}');
                   if (_usernameController.text.isNotEmpty && _passwordController.text.isNotEmpty) {
+                     final passwordEncrypted = sha256.convert(utf8.encode(_passwordController.text)).toString();
+                      print('Password encrypted: $passwordEncrypted');
+                      await UserAPI().createUser(_usernameController.text, passwordEncrypted);                   
                     ScaffoldMessenger.of(context).showSnackBar(
                       const SnackBar(content: Text('Account created successfully!')),
                     );
-                    await UserAPI().createUser(_usernameController.text, _passwordController.text);                    
                     _usernameController.clear();
                     _passwordController.clear();
                     context.go('/');
