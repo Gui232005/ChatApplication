@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
 class Footer extends StatelessWidget {
   const Footer({Key? key}) : super(key: key);
@@ -22,7 +23,9 @@ class Footer extends StatelessWidget {
             SizedBox(width: MediaQuery.of(context).size.width / 4.85), // Spacing between icons
             IconButton(onPressed: (){}, icon: Icon(Icons.phone, color: Colors.grey[600], size: 30)),
             SizedBox(width: MediaQuery.of(context).size.width / 4.85),
-            IconButton(onPressed: (){}, icon: Icon(Icons.person, color: Colors.grey[600], size: 30)), // Profile icon, can be replaced with user's avatar
+            IconButton(onPressed: (){
+              context.push('/profileHome');
+            }, icon: Icon(Icons.person, color: Colors.grey[600], size: 30)), // Profile icon, can be replaced with user's avatar
           ],
         ),
       ),

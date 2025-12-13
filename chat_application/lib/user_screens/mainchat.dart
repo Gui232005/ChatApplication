@@ -11,22 +11,23 @@ class MainChat extends StatefulWidget {
 }
 
 class _MainChatState extends State<MainChat> {
-  late Future<String?> _usernameFuture;
-
   @override
   void initState() {
     super.initState();
-    _usernameFuture = _fetchUsername();
+    loadUsername();
   }
 
-  Future<String?> _fetchUsername() async {
-    final prefs = await SharedPreferences.getInstance();
-    return prefs.getString('username');
+  Future<void> loadUsername() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    setState(() {
+      username = prefs.getString('username') ?? 'User';
+    });
   }
+
+  late String username;
 
   @override
   Widget build(BuildContext context) {
-    _usernameFuture = _usernameFuture ?? _fetchUsername();
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: false, // Removes the back button by default
@@ -49,24 +50,9 @@ class _MainChatState extends State<MainChat> {
           padding: const EdgeInsets.only(top: 50.0, left: 25.0, right: 25.0),
           child: Column(
             children: [
-              FutureBuilder<String?>(
-                future: _usernameFuture,
-                builder: (context, snapshot) {
-                  if (snapshot.connectionState == ConnectionState.waiting) {
-                    return const CircularProgressIndicator();
-                  } else if (snapshot.hasError) {
-                    return Text('Error: ${snapshot.error}');
-                  } else {
-                    final username = snapshot.data ?? 'Guest';
-                    return Text(
-                      'Hello, $username',
-                      style: const TextStyle(
-                        fontSize: 22,
-                        fontWeight: FontWeight.w500,
-                      ),
-                    );
-                  }
-                },
+              if(username != null) Text(
+                'Hello, $username!',
+                style: const TextStyle(fontSize: 22, fontWeight: FontWeight.w600),
               ),
               Text(
                 'No messages yet',
