@@ -21,7 +21,7 @@ async def get_user_image(username: str):
         return response.data[0]
     return {"error": "User not found"}
 
-router.get("/getuserStatus/{username}")
+@router.get("/getuserStatus/{username}")
 async def get_user_status(username: str):
     response = supabase_client.table("users").select("status").eq("username", username).execute()
     if response.data:
