@@ -1,8 +1,6 @@
 import 'dart:async';
 import 'package:chat_application/API/user.dart';
-import 'package:chat_application/profile/profileinfo.dart';
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class AccountInformation extends StatefulWidget {
@@ -16,6 +14,7 @@ class _AccountInformationState extends State<AccountInformation> {
   void initState() {
     super.initState();
     loadUsername();
+    loadUserDescription();
     loadProfileImage();
   }
 
@@ -33,8 +32,74 @@ class _AccountInformationState extends State<AccountInformation> {
     });
   }
 
+  Future<void> loadUserDescription() async {
+    final description = await getUserDescription(username);
+    setState(() {
+      userDescription = description as String;
+      print("====================Loaded user description: $userDescription====================");
+    });
+  }
+
+  void _showEditStatusDialog(BuildContext context) {
+    TextEditingController _statusController =
+        TextEditingController(text: userDescription);
+
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: Text('Edit Status'),
+        content: TextField(
+          controller: _statusController,
+          maxLines: 3,
+          decoration: InputDecoration(
+            hintText: 'Enter your status',
+            border: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(8),
+            ),
+          ),
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(context).pop(),
+            child: Text('Cancel'),
+          ),
+          ElevatedButton(
+            onPressed: () {
+              _updateUserDescription(_statusController.text);
+              Navigator.of(context).pop();
+            },
+            child: Text('Save'),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Future<void> _updateUserDescription(String newDescription) async {
+    try {
+      await updateUserDescription(username, newDescription);
+      setState(() {
+        userDescription = newDescription;
+      });
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Status updated successfully'),
+          duration: Duration(seconds: 2),
+        ),
+      );
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Failed to update status'),
+          duration: Duration(seconds: 2),
+        ),
+      );
+    }
+  }
+
   String imageURL = '';
   late String username;
+  String userDescription = '';
 
   @override
   Widget build(BuildContext context) {
@@ -132,7 +197,7 @@ class _AccountInformationState extends State<AccountInformation> {
                                 ),
                                 SizedBox(height: 4),
                                 Text(
-                                  'Online',
+                                  userDescription != '' ? userDescription : 'No status set',
                                   style: TextStyle(
                                     fontSize: 16,
                                     fontWeight: FontWeight.bold,
@@ -143,7 +208,9 @@ class _AccountInformationState extends State<AccountInformation> {
                             ),
                           ),
                           IconButton(
-                            onPressed: () {},
+                            onPressed: () {
+                              _showEditStatusDialog(context);
+                            },
                             icon: Icon(Icons.edit, color: Colors.blue.shade500),
                             splashRadius: 24,
                           ),

@@ -55,21 +55,21 @@ class UserAPI {
   }
 }
 
-Future<String> fetchUserStatus(String username) async {
+Future<http.Response> getUserDescription(String username) async {
   final url = Uri.parse('https://chat-application-noie.onrender.com/users/getuserStatus/$username');
   final response = await http.get(url);
 
   if (response.statusCode == 200) {
     final jsonResponse = jsonDecode(response.body);
-    return jsonResponse['status'];
+    return jsonResponse['description'];
   } else {
-    throw Exception('Failed to load user status');
+    throw Exception('Failed to load user description');
   }
 }
 
 Future<void> updateUserDescription(String username, String description) async {
   final url = Uri.parse('https://chat-application-noie.onrender.com/users/updateuserStatus/$username');
-  final response = await http.put(
+  final response = await http.post(
     url,
     headers: {'Content-Type': 'application/json'},
     body: jsonEncode({'description': description}),
