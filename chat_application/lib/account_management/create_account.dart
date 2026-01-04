@@ -59,7 +59,7 @@ class _CreateAccountState extends State<CreateAccount> {
                   print('Creating account for ${_usernameController.text}');
                   if (_usernameController.text.isNotEmpty && _passwordController.text.isNotEmpty) {
                      final passwordEncrypted = sha256.convert(utf8.encode(_passwordController.text)).toString();
-                      print('Password encrypted: $passwordEncrypted');
+                      //print('Password encrypted: $passwordEncrypted');
                       await UserAPI().createUser(_usernameController.text, passwordEncrypted);                   
                     ScaffoldMessenger.of(context).showSnackBar(
                       const SnackBar(content: Text('Account created successfully!')),

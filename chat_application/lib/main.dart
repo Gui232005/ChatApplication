@@ -117,7 +117,7 @@ class _MyHomePageState extends State<MyHomePage> {
                       );
                       SharedPreferences prefs =
                           await SharedPreferences.getInstance();
-                      await prefs.setString('username', _usernameController.text);
+                      prefs.setString('username', _usernameController.text);
                       //print("================Username saved: ${prefs.getString('username')}================");
                       context.push('/mainChat');
                     } else {

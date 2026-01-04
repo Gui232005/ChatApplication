@@ -76,7 +76,7 @@ class _ProfileHomeState extends State<ProfileHome> {
                 leading: Icon(Icons.person),
                 title: Text('Account Information'),
                 onTap: () {
-                  // Navigate to account information page
+                  context.push('/account_info');
                 },
               ),
               Divider(),

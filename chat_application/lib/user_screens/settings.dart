@@ -31,6 +31,11 @@ class _SeetingsState extends State<Seetings> {
     });
   }
 
+  Future<void> loadDescription() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    
+  }
+
   String imageURL = '';
   late String username;
   late String description;
