@@ -68,7 +68,7 @@ Future<http.Response> getUserDescription(String username) async {
 }
 
 Future<void> updateUserDescription(String username, String description) async {
-  final url = Uri.parse('https://chat-application-noie.onrender.com/users/updateuserStatus/$username');
+  final url = Uri.parse('https://chat-application-noie.onrender.com/users/updateuser/$username/$description');
   final response = await http.post(
     url,
     headers: {'Content-Type': 'application/json'},

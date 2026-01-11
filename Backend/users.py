@@ -62,7 +62,7 @@ async def update_profile_picture(profile_picture: str):
     response = supabase_client.table("users").update({"profile_picture": profile_picture}).eq("profile_picture", profile_picture).execute()
     return {"updated": response.data}
 
-@router.post("/updateuser/{status}")
+@router.post("/updateuser/{user}/{status}")
 async def update_status(status: str):
     response = supabase_client.table("users").update({"status": status}).eq("status", status).execute()
     return {"updated": response.data}
